@@ -10,14 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v3
-
-      - name: Display System Info
-        run: echo "Running CI pipeline..."
 
       - name: Build Step
         run: echo "Build successful"
 
       - name: Test Step
         run: echo "Tests passed"
+
+      - name: Send Slack Notification
+        if: always()
+        run: |
+          curl -X POST -H "Content-type: application/json" \
+          --data "{\"text\":\"CI Pipeline completed for devops-webapp\"}" \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
